@@ -129,6 +129,7 @@
     <div class="section" id="recipesBox">
       <h2>🍳 推薦料理</h2>
       <p id="recipes"></p>
+<img id="recipeImage" style="width:100%; max-width:700px; border-radius:12px; margin-top:15px; display:none;">
     </div>
 
   </div>
@@ -197,7 +198,11 @@ async function loadProduct() {
 
     document.getElementById("recipes").innerText =
       p.recipes || "—";
-
+const recipeImage = document.getElementById("recipeImage");
+if (p.recipe_image_url) {
+  recipeImage.src = p.recipe_image_url;
+  recipeImage.style.display = "block";
+}
     document.getElementById("loading").style.display = "none";
     document.getElementById("content").style.display = "block";
 
