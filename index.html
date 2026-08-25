@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>六禾蔬果｜生產履歷</title>
+  <title>六禾蔬果｜我是誰</title>
 
   <style>
     body {
@@ -40,9 +40,16 @@
 
     .title {
       color: #4f8a45;
-      font-size: 25px;
+      font-size: 28px;
       font-weight: bold;
       margin-bottom: 20px;
+    }
+
+    .product-image {
+      width: 100%;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      display: none;
     }
 
     .row {
@@ -65,6 +72,17 @@
       font-size: 21px;
     }
 
+    .section p {
+      line-height: 1.8;
+    }
+
+    .recipe-image {
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 15px;
+      display: none;
+    }
+
     .footer {
       text-align: center;
       padding: 25px;
@@ -82,24 +100,16 @@
 
   <div class="header">
     <h1>六禾蔬果</h1>
-    <p>產地直送・安心生產履歷</p>
+    <p>新鮮・安心・產地直送</p>
   </div>
 
   <div id="loading">資料讀取中...</div>
 
   <div class="card" id="content" style="display:none;">
 
-    <div class="title" id="productName">新鮮蔬菜生產履歷</div>
+    <div class="title">我是誰</div>
 
-    <div class="row">
-      <span class="label">產地：</span>
-      <span id="origin"></span>
-    </div>
-
-    <div class="row">
-      <span class="label">生產者／農場：</span>
-      <span id="farm"></span>
-    </div>
+    <img id="productImage" class="product-image">
 
     <div class="row">
       <span class="label">品種：</span>
@@ -107,8 +117,8 @@
     </div>
 
     <div class="row">
-      <span class="label">生產批號：</span>
-      <span id="batch"></span>
+      <span class="label">產地：</span>
+      <span id="origin"></span>
     </div>
 
     <div class="row">
@@ -116,20 +126,20 @@
       <span id="storage"></span>
     </div>
 
-    <div class="section" id="featuresBox">
+    <div class="section">
       <h2>🥬 蔬菜特性</h2>
       <p id="features"></p>
     </div>
 
-    <div class="section" id="benefitsBox">
+    <div class="section">
       <h2>🌱 營養特色</h2>
-      <p id="benefits"></p>
+      <p id="nutrition"></p>
     </div>
 
-    <div class="section" id="recipesBox">
+    <div class="section">
       <h2>🍳 推薦料理</h2>
       <p id="recipes"></p>
-<img id="recipeImage" style="width:100%; max-width:700px; border-radius:12px; margin-top:15px; display:none;">
+      <img id="recipeImage" class="recipe-image">
     </div>
 
   </div>
@@ -166,26 +176,17 @@ async function loadProduct() {
 
     if (!data.length) {
       document.getElementById("loading").innerText =
-        "找不到這筆生產履歷";
+        "找不到這筆資料";
       return;
     }
 
     const p = data[0];
 
-    document.getElementById("productName").innerText =
-      p.name || "蔬菜生產履歷";
-
-    document.getElementById("origin").innerText =
-      p.origin || "—";
-
-    document.getElementById("farm").innerText =
-      p.farm || "—";
-
     document.getElementById("variety").innerText =
       p.variety || "—";
 
-    document.getElementById("batch").innerText =
-      p.batch_no || "—";
+    document.getElementById("origin").innerText =
+      p.origin || "—";
 
     document.getElementById("storage").innerText =
       p.storage || "—";
@@ -193,16 +194,24 @@ async function loadProduct() {
     document.getElementById("features").innerText =
       p.features || "—";
 
-    document.getElementById("benefits").innerText =
-      p.benefits || "—";
+    document.getElementById("nutrition").innerText =
+      p.nutrition || "—";
 
     document.getElementById("recipes").innerText =
       p.recipes || "—";
-const recipeImage = document.getElementById("recipeImage");
-if (p.recipe_image_url) {
-  recipeImage.src = p.recipe_image_url;
-  recipeImage.style.display = "block";
-}
+
+    const productImage = document.getElementById("productImage");
+    if (p.image_url) {
+      productImage.src = p.image_url;
+      productImage.style.display = "block";
+    }
+
+    const recipeImage = document.getElementById("recipeImage");
+    if (p.recipe_image_url) {
+      recipeImage.src = p.recipe_image_url;
+      recipeImage.style.display = "block";
+    }
+
     document.getElementById("loading").style.display = "none";
     document.getElementById("content").style.display = "block";
 
