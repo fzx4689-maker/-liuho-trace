@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>六禾蔬果｜生產履歷</title>
+
+  <style>
+    body {
+      font-family: Arial, "Microsoft JhengHei", sans-serif;
+      background: #f5f8f3;
+      margin: 0;
+      color: #333;
+    }
+
+    .header {
+      background: #4f8a45;
+      color: white;
+      text-align: center;
+      padding: 28px 15px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+    }
+
+    .card {
+      max-width: 650px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 3px 15px rgba(0,0,0,.08);
+    }
+
+    .title {
+      color: #4f8a45;
+      font-size: 25px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .row {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      line-height: 1.7;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #4f8a45;
+    }
+
+    .section {
+      margin-top: 25px;
+    }
+
+    .section h2 {
+      color: #4f8a45;
+      font-size: 21px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+    }
+
+    #loading {
+      text-align: center;
+      padding: 50px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>六禾蔬果</h1>
+    <p>產地直送・安心生產履歷</p>
+  </div>
+
+  <div id="loading">資料讀取中...</div>
+
+  <div class="card" id="content" style="display:none;">
+
+    <div class="title" id="productName">新鮮蔬菜生產履歷</div>
+
+    <div class="row">
+      <span class="label">產地：</span>
+      <span id="origin"></span>
+    </div>
+
+    <div class="row">
+      <span class="label">生產者／農場：</span>
+      <span id="farm"></span>
+    </div>
+
+    <div class="row">
+      <span class="label">品種：</span>
+      <span id="variety"></span>
+    </div>
+
+    <div class="row">
+      <span class="label">生產批號：</span>
+      <span id="batch"></span>
+    </div>
+
+    <div class="row">
+      <span class="label">保存方式：</span>
+      <span id="storage"></span>
+    </div>
+
+    <div class="section" id="featuresBox">
+      <h2>🥬 蔬菜特性</h2>
+      <p id="features"></p>
+    </div>
+
+    <div class="section" id="benefitsBox">
+      <h2>🌱 營養特色</h2>
+      <p id="benefits"></p>
+    </div>
+
+    <div class="section" id="recipesBox">
+      <h2>🍳 推薦料理</h2>
+      <p id="recipes"></p>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    六禾蔬果｜新鮮・安心・產地直送
+  </div>
+
+<script>
+
+const SUPABASE_URL =
+"https://nivlimhmzgpmgztzppgr.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_n2ftnUjtUl-URAfuY-sUEQ_SEfC6iAt";
+
+async function loadProduct() {
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id") || "3";
+
+  try {
+
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/products?id=eq.${id}&select=*`,
+      {
+        headers: {
+          "apikey": SUPABASE_KEY
+        }
+      }
+    );
+
+    const data = await response.json();
+
+    if (!data.length) {
+      document.getElementById("loading").innerText =
+        "找不到這筆生產履歷";
+      return;
+    }
+
+    const p = data[0];
+
+    document.getElementById("productName").innerText =
+      p.name || "蔬菜生產履歷";
+
+    document.getElementById("origin").innerText =
+      p.origin || "—";
+
+    document.getElementById("farm").innerText =
+      p.farm || "—";
+
+    document.getElementById("variety").innerText =
+      p.variety || "—";
+
+    document.getElementById("batch").innerText =
+      p.batch_no || "—";
+
+    document.getElementById("storage").innerText =
+      p.storage || "—";
+
+    document.getElementById("features").innerText =
+      p.features || "—";
+
+    document.getElementById("benefits").innerText =
+      p.benefits || "—";
+
+    document.getElementById("recipes").innerText =
+      p.recipes || "—";
+
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("content").style.display = "block";
+
+  } catch (error) {
+
+    document.getElementById("loading").innerText =
+      "資料讀取失敗，請稍後再試";
+
+  }
+}
+
+loadProduct();
+
+</script>
+
+</body>
+</html>
