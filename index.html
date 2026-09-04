@@ -258,7 +258,13 @@ async function loadProduct() {
 }
 
 loadProduct();
-let allProducts = [];
+const pageParams = new URLSearchParams(window.location.search);
+const pageProductId = pageParams.get("id");
+
+if (pageProductId) {
+  document.getElementById("productBrowser").style.display = "none";
+}
+  let allProducts = [];
 let activeCategory = "全部";
 
 async function loadProductBrowser() {
