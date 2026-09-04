@@ -350,6 +350,7 @@ function renderProductList() {
 }
 
 document.getElementById("productSearch").addEventListener("input", () => {
+  activeCategory = "全部";
   document.getElementById("productList").style.display = "block";
   renderProductList();
 });
