@@ -349,7 +349,10 @@ function renderProductList() {
   `).join("");
 }
 
-document.getElementById("productSearch").addEventListener("input", renderProductList);
+document.getElementById("productSearch").addEventListener("input", () => {
+  document.getElementById("productList").style.display = "block";
+  renderProductList();
+});
 
 document.querySelectorAll(".categoryBtn").forEach(button => {
   button.style.border = "1px solid #4d8d45";
@@ -370,7 +373,7 @@ document.querySelectorAll(".categoryBtn").forEach(button => {
 
     button.style.background = "#4d8d45";
     button.style.color = "#fff";
-
+document.getElementById("productList").style.display = "block";
     renderProductList();
   });
 });
